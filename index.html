@@ -6,6 +6,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="description" content="Convert images to PDF, PDF to PPT, PPT to PDF, and PDF to Word online for free.">
 <meta name="robots" content="index, follow">
+
+<!-- Security -->
 <meta http-equiv="Content-Security-Policy" content="
       default-src 'self';
       script-src 'self' https://cdnjs.cloudflare.com;
@@ -39,27 +41,29 @@ input[type="file"]{padding:5px}
 <div class="box">
 <h3>PDF to PPT</h3>
 <input id="pdfToPptInput" type="file" accept="application/pdf" /><br><br>
-<button onclick="alert('PDF → PPT conversion is not available in browser yet.')">Convert</button>
+<button onclick="alert('PDF → PPT conversion requires server. Coming soon!')">Convert</button>
 </div>
 
 <!-- PPT to PDF -->
 <div class="box">
 <h3>PPT to PDF</h3>
 <input id="pptToPdfInput" type="file" accept=".ppt,.pptx" /><br><br>
-<button onclick="alert('PPT → PDF conversion is not available in browser yet.')">Convert</button>
+<button onclick="alert('PPT → PDF conversion requires server. Coming soon!')">Convert</button>
 </div>
 
 <!-- PDF to Word -->
 <div class="box">
 <h3>PDF to Word</h3>
 <input id="pdfToWordInput" type="file" accept="application/pdf" /><br><br>
-<button onclick="alert('PDF → Word extraction is not available in browser yet.')">Convert</button>
+<button onclick="alert('PDF → Word extraction requires server. Coming soon!')">Convert</button>
 </div>
 
-<!-- jsPDF library -->
+<!-- Libraries -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
 
 <script>
+// Image to PDF - fully working on mobile & desktop
 async function convertImageToPDF() {
   const input = document.getElementById("imageInput");
   if (!input.files.length) {
@@ -67,7 +71,6 @@ async function convertImageToPDF() {
     return;
   }
 
-  // Initialize jsPDF
   const pdf = new window.jspdf.jsPDF();
 
   for (let i = 0; i < input.files.length; i++) {
@@ -84,9 +87,12 @@ async function convertImageToPDF() {
     pdf.addImage(img, 'JPEG', 10, 10, imgWidth, imgHeight);
   }
 
-  pdf.save("converted.pdf");
+  // Save PDF using FileSaver.js for better mobile support
+  const pdfBlob = pdf.output('blob');
+  saveAs(pdfBlob, "converted.pdf");
 }
 
+// Helper function to read file as Data URL
 function readFileAsDataURL(file) {
   return new Promise(resolve => {
     const reader = new FileReader();
