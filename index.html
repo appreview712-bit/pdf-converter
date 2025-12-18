@@ -6,7 +6,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="description" content="Convert images to PDF, PDF to PPT, PPT to PDF, and PDF to Word online for free.">
 <meta name="robots" content="index, follow">
-<!-- Security -->
 <meta http-equiv="Content-Security-Policy" content="
       default-src 'self';
       script-src 'self' https://cdnjs.cloudflare.com;
@@ -57,35 +56,39 @@ input[type="file"]{padding:5px}
 <button onclick="alert('PDF → Word extraction is not available in browser yet.')">Convert</button>
 </div>
 
-<!-- JS: jsPDF library -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" integrity="sha512-5hQj6ksvUfV0D0hZX7QvY0JdxiGThVHTKXz8l/jmjQ4wZV62iI0zA+0U2u3I9Wjq+g9h8e3S9Sy0l6CdwGy9OA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<!-- jsPDF library -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
 <script>
-// Image to PDF
 async function convertImageToPDF() {
-  const { jsPDF } = window.jspdf;
   const input = document.getElementById("imageInput");
-  if (!input.files.length) { 
-    alert("Please select at least one image"); 
-    return; 
+  if (!input.files.length) {
+    alert("Please select at least one image");
+    return;
   }
-  const pdf = new jsPDF();
+
+  // Initialize jsPDF
+  const pdf = new window.jspdf.jsPDF();
+
   for (let i = 0; i < input.files.length; i++) {
     const file = input.files[i];
-    const data = await readFileAsDataURL(file);
+    const imgData = await readFileAsDataURL(file);
     const img = new Image();
-    img.src = data;
+    img.src = imgData;
     await new Promise(resolve => img.onload = resolve);
-    const imgWidth = 190; // page width
+
+    const imgWidth = 190;
     const imgHeight = img.height * (imgWidth / img.width);
+
     if (i > 0) pdf.addPage();
     pdf.addImage(img, 'JPEG', 10, 10, imgWidth, imgHeight);
   }
+
   pdf.save("converted.pdf");
 }
 
-function readFileAsDataURL(file){
-  return new Promise(resolve=>{
+function readFileAsDataURL(file) {
+  return new Promise(resolve => {
     const reader = new FileReader();
     reader.onload = e => resolve(e.target.result);
     reader.readAsDataURL(file);
