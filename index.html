@@ -1,32 +1,35 @@
-    <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>DocConvertly – Free PDF Tools</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <style>
-    * { box-sizing: border-box; }
-    body { margin: 0; font-family: "Inter", Arial, sans-serif; background: #eef2f7; color: #0f172a; }
-    header { background: linear-gradient(120deg, #2563eb, #3b82f6); color: white; padding: 50px 20px; text-align: center; }
-    header h1 { margin: 0; font-size: 36px; }
-    header p { margin-top: 10px; font-size: 16px; }
-    .privacy-note { margin-top: 15px; display: inline-block; background: rgba(255,255,255,0.25); padding: 8px 14px; border-radius: 999px; font-size: 13px; }
-    .tools { max-width: 1200px; margin: -30px auto 40px; padding: 0 20px; display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; }
-    .tool { background: white; border-radius: 18px; padding: 30px 25px; box-shadow: 0 12px 30px rgba(0,0,0,0.08); text-align: center; transition: 0.25s; position: relative; }
-    .tool:hover { transform: translateY(-6px); }
-    .tool h2 { font-size: 22px; margin-bottom: 10px; }
-    .tool p { font-size: 14px; color: #475569; margin-bottom: 20px; }
-    .tool input, .tool select { width: 100%; margin-bottom: 15px; padding: 10px; }
-    button { width: 100%; padding: 14px; background: linear-gradient(135deg, #2563eb, #1e40af); color: white; border: none; border-radius: 10px; font-size: 15px; cursor: pointer; }
-    footer { text-align: center; padding: 25px; font-size: 14px; color: #64748b; }
-    #loader { position: fixed; inset: 0; background: rgba(255,255,255,0.85); display: none; align-items: center; justify-content: center; flex-direction: column; z-index: 9999; }
-    .spinner { width: 50px; height: 50px; border: 5px solid #c7d2fe; border-top: 5px solid #2563eb; border-radius: 50%; animation: spin 1s linear infinite; }
-    @keyframes spin { to { transform: rotate(360deg); } }
-    #loader p { margin-top: 15px; font-weight: 500; color: #1e40af; }
-    .preview { margin-top: 10px; max-height: 200px; overflow:auto; border:1px solid #cbd5e1; padding:5px; border-radius:8px; background:white; }
-    .preview img { max-width: 100%; max-height: 180px; display:block; margin:auto; }
-    .preview canvas { max-width: 100%; display:block; margin:auto; border:1px solid #cbd5e1; }
-  </style>
+<meta charset="UTF-8">
+<title>DocConvertly – Free PDF Tools</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+*{box-sizing:border-box;}
+body{margin:0;font-family:"Inter",Arial,sans-serif;background:#eef2f7;color:#0f172a;}
+header{background:linear-gradient(120deg,#2563eb,#3b82f6);color:white;padding:50px 20px;text-align:center;}
+header h1{margin:0;font-size:36px;}
+header p{margin-top:10px;font-size:16px;}
+.privacy-note{margin-top:15px;display:inline-block;background:rgba(255,255,255,0.25);padding:8px 14px;border-radius:999px;font-size:13px;}
+.tools{max-width:1200px;margin:-30px auto 40px;padding:0 20px;display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:25px;}
+.tool{background:white;border-radius:18px;padding:30px 25px;box-shadow:0 12px 30px rgba(0,0,0,0.08);text-align:center;transition:0.25s;position:relative;}
+.tool:hover{transform:translateY(-6px);}
+.tool h2{font-size:22px;margin-bottom:10px;}
+.tool input,.tool select{width:100%;margin-bottom:15px;padding:10px;}
+button{width:100%;padding:14px;background:linear-gradient(135deg,#2563eb,#1e40af);color:white;border:none;border-radius:10px;font-size:15px;cursor:pointer;}
+footer{text-align:center;padding:25px;font-size:14px;color:#64748b;}
+#loader{position:fixed;inset:0;background:rgba(255,255,255,0.85);display:none;align-items:center;justify-content:center;flex-direction:column;z-index:9999;}
+.spinner{width:50px;height:50px;border:5px solid #c7d2fe;border-top:5px solid #2563eb;border-radius:50%;animation:spin 1s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg);}}
+#loader p{margin-top:15px;font-weight:500;color:#1e40af;}
+.preview{margin-top:10px;max-height:200px;overflow:auto;border:1px solid #cbd5e1;padding:5px;border-radius:8px;background:white;}
+.preview img{max-width:100%;max-height:180px;display:block;margin:auto;}
+.preview canvas{max-width:100%;display:block;margin:auto;border:1px solid #cbd5e1;}
+.drop-zone{border:2px dashed #94a3b8;padding:15px;border-radius:10px;background:#f1f5f9;cursor:pointer;transition:0.25s;}
+.drop-zone.dragover{background:#e0e7ff;border-color:#3b82f6;}
+.drop-zone p{margin:0;color:#64748b;}
+.limits{margin-top:10px;padding:10px;background:#f1f5f9;border-radius:8px;font-size:13px;color:#334155;}
+</style>
 </head>
 <body>
 <div id="loader">
@@ -42,64 +45,99 @@
 
 <main class="tools">
 
-  <div class="tool">
-    <h2>Image to PDF</h2>
-    <input type="file" id="imageInput" accept="image/*">
-    <div class="preview" id="imagePreview"></div>
-    <button onclick="convertImageToPDF()">Convert</button>
+<div class="tool">
+  <h2>Image to PDF</h2>
+  <div class="drop-zone" id="dropImage"><p>Drag & Drop Image or Click</p>
+    <input type="file" id="imageInput" accept="image/*" style="display:none">
   </div>
+  <div class="preview" id="imagePreview"></div>
+  <button onclick="convertImageToPDF()">Convert</button>
+  <div class="limits">
+    Max file size ~20MB. Formats: jpg, png, gif.
+  </div>
+</div>
 
-  <div class="tool">
-    <h2>PDF to Image</h2>
-    <input type="file" id="pdfInput" accept="application/pdf">
-    <input type="number" id="pageNumber" min="1" value="1">
-    <div class="preview" id="pdfPreview"></div>
-    <button onclick="convertPDFToImage()">Convert</button>
-    <canvas id="pdfCanvas" style="display:none;"></canvas>
+<div class="tool">
+  <h2>PDF to Image</h2>
+  <div class="drop-zone" id="dropPDF"><p>Drag & Drop PDF or Click</p>
+    <input type="file" id="pdfInput" accept="application/pdf" style="display:none">
   </div>
+  <label>Page:</label>
+  <input type="number" id="pageNumber" min="1" value="1">
+  <div class="preview" id="pdfPreview"></div>
+  <button onclick="convertPDFToImage()">Convert</button>
+  <div class="limits">
+    Max PDF size ~30MB. Preview shows the selected page.
+  </div>
+</div>
 
-  <div class="tool">
-    <h2>PDF to Word</h2>
-    <input type="file" id="pdfWordInput" accept="application/pdf">
-    <div class="preview" id="pdfWordPreview"></div>
-    <button onclick="convertPDFToWord()">Convert</button>
+<div class="tool">
+  <h2>PDF to Word</h2>
+  <div class="drop-zone" id="dropPDFWord"><p>Drag & Drop PDF or Click</p>
+    <input type="file" id="pdfWordInput" accept="application/pdf" style="display:none">
   </div>
+  <label>Page:</label>
+  <input type="number" id="pdfWordPage" min="1" value="1">
+  <div class="preview" id="pdfWordPreview"></div>
+  <button onclick="convertPDFToWord()">Convert</button>
+  <div class="limits">
+    Max PDF size ~30MB. Extracts text for Word. Multi-page PDFs supported.
+  </div>
+</div>
 
-  <div class="tool">
-    <h2>Word to PDF</h2>
-    <input type="file" id="wordInput" accept=".docx">
-    <div class="preview" id="wordPreview"></div>
-    <button onclick="convertWordToPDF()">Convert</button>
+<div class="tool">
+  <h2>Word to PDF</h2>
+  <div class="drop-zone" id="dropWord"><p>Drag & Drop Word or Click</p>
+    <input type="file" id="wordInput" accept=".docx" style="display:none">
   </div>
+  <div class="preview" id="wordPreview"></div>
+  <button onclick="convertWordToPDF()">Convert</button>
+  <div class="limits">
+    Max Word size ~20MB. Only docx supported.
+  </div>
+</div>
 
-  <div class="tool">
-    <h2>Merge PDF</h2>
-    <input type="file" id="mergePdfInput" accept="application/pdf" multiple>
-    <button onclick="mergePDFs()">Merge</button>
+<div class="tool">
+  <h2>Merge PDF</h2>
+  <div class="drop-zone" id="dropMerge"><p>Drag & Drop PDFs or Click</p>
+    <input type="file" id="mergePdfInput" accept="application/pdf" multiple style="display:none">
   </div>
+  <button onclick="mergePDFs()">Merge</button>
+  <div class="limits">
+    Max 10 PDFs recommended. Total size ~30MB.
+  </div>
+</div>
 
-  <div class="tool">
-    <h2>Split PDF</h2>
-    <input type="file" id="splitPdfInput" accept="application/pdf">
-    <button onclick="splitPDF()">Split</button>
+<div class="tool">
+  <h2>Split PDF</h2>
+  <div class="drop-zone" id="dropSplit"><p>Drag & Drop PDF or Click</p>
+    <input type="file" id="splitPdfInput" accept="application/pdf" style="display:none">
   </div>
+  <button onclick="splitPDF()">Split</button>
+  <div class="limits">
+    Works for any number of pages. Max PDF size ~30MB.
+  </div>
+</div>
 
-  <div class="tool">
-    <h2>Rotate PDF</h2>
-    <input type="file" id="rotatePdfInput" accept="application/pdf">
-    <select id="rotationAngle">
-      <option value="90">90°</option>
-      <option value="180">180°</option>
-      <option value="270">270°</option>
-    </select>
-    <button onclick="rotatePDF()">Rotate</button>
+<div class="tool">
+  <h2>Rotate PDF</h2>
+  <div class="drop-zone" id="dropRotate"><p>Drag & Drop PDF or Click</p>
+    <input type="file" id="rotatePdfInput" accept="application/pdf" style="display:none">
   </div>
+  <select id="rotationAngle">
+    <option value="90">90°</option>
+    <option value="180">180°</option>
+    <option value="270">270°</option>
+  </select>
+  <button onclick="rotatePDF()">Rotate</button>
+  <div class="limits">
+    Works for any PDF. Max size ~30MB.
+  </div>
+</div>
 
 </main>
-
 <footer>© 2025 DocConvertly. All rights reserved.</footer>
 
-<!-- Libraries -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.4.21/mammoth.browser.min.js"></script>
@@ -107,182 +145,140 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
 
 <script>
-pdfjsLib.GlobalWorkerOptions.workerSrc =
-  "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js";
+pdfjsLib.GlobalWorkerOptions.workerSrc="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js";
 
-function showLoader(text="Processing… Please wait"){ 
-  document.getElementById("loaderText").innerText=text;
-  document.getElementById("loader").style.display="flex"; 
+// Loader
+function showLoader(text="Processing…"){document.getElementById("loaderText").innerText=text;document.getElementById("loader").style.display="flex";}
+function hideLoader(){document.getElementById("loader").style.display="none";}
+
+// Drag & Drop
+function setupDropZone(dropId,inputId){
+  const drop=document.getElementById(dropId);
+  const input=document.getElementById(inputId);
+  drop.addEventListener("click",()=>input.click());
+  drop.addEventListener("dragover",e=>{e.preventDefault();drop.classList.add("dragover");});
+  drop.addEventListener("dragleave",e=>{drop.classList.remove("dragover");});
+  drop.addEventListener("drop",e=>{e.preventDefault();drop.classList.remove("dragover");
+    if(e.dataTransfer.files.length>0){input.files=e.dataTransfer.files; input.dispatchEvent(new Event('change'));}
+  });
 }
-function hideLoader(){ document.getElementById("loader").style.display="none"; }
-
-// --- Image Preview ---
-document.getElementById("imageInput").addEventListener("change", function(){
-  const preview=document.getElementById("imagePreview");
-  preview.innerHTML="";
-  if(this.files.length){
-    const img=document.createElement("img");
-    img.src=URL.createObjectURL(this.files[0]);
-    preview.appendChild(img);
-  }
+["dropImage","dropPDF","dropPDFWord","dropWord","dropMerge","dropSplit","dropRotate"].forEach(id=>{
+  const map={"dropImage":"imageInput","dropPDF":"pdfInput","dropPDFWord":"pdfWordInput","dropWord":"wordInput","dropMerge":"mergePdfInput","dropSplit":"splitPdfInput","dropRotate":"rotatePdfInput"};
+  setupDropZone(id,map[id]);
 });
 
-// --- PDF Preview ---
+// Previews
+document.getElementById("imageInput").addEventListener("change",function(){
+  const p=document.getElementById("imagePreview"); p.innerHTML=""; if(this.files.length){const img=document.createElement("img"); img.src=URL.createObjectURL(this.files[0]); p.appendChild(img);}
+});
 let pdfTotalPages=0;
-document.getElementById("pdfInput").addEventListener("change", async function(){
-  const preview=document.getElementById("pdfPreview");
-  preview.innerHTML="";
-  if(!this.files.length) return;
-  const arrayBuffer=await this.files[0].arrayBuffer();
-  const pdfDoc=await pdfjsLib.getDocument(arrayBuffer).promise;
+let pdfDoc=null;
+document.getElementById("pdfInput").addEventListener("change",async function(){
+  const p=document.getElementById("pdfPreview"); p.innerHTML=""; if(!this.files.length)return;
+  const arr=await this.files[0].arrayBuffer();
+  pdfDoc=await pdfjsLib.getDocument(arr).promise;
   pdfTotalPages=pdfDoc.numPages;
   document.getElementById("pageNumber").max=pdfTotalPages;
-  const p=document.createElement("p");
-  p.innerText="Total Pages: "+pdfTotalPages;
-  preview.appendChild(p);
+  const info=document.createElement("p"); info.innerText="Total Pages: "+pdfTotalPages; p.appendChild(info);
 });
 
-// --- PDF to Image ---
-async function convertPDFToImage(){
-  const input=document.getElementById("pdfInput");
-  if(!input.files.length) return alert("Select a PDF");
-  const pageNum=parseInt(document.getElementById("pageNumber").value)||1;
-  if(pageNum>pdfTotalPages) return alert("Page number exceeds total pages");
-  showLoader("Converting PDF to Image…");
-  const file=input.files[0];
-  const arrayBuffer=await file.arrayBuffer();
-  const pdfDoc=await pdfjsLib.getDocument(arrayBuffer).promise;
+// PDF → Word live extraction
+document.getElementById("pdfWordInput").addEventListener("change",async function(){
+  const p=document.getElementById("pdfWordPreview"); p.innerHTML=""; if(!this.files.length)return;
+  const arr=await this.files[0].arrayBuffer();
+  pdfDoc=await pdfjsLib.getDocument(arr).promise;
+  pdfTotalPages=pdfDoc.numPages;
+  document.getElementById("pdfWordPage").max=pdfTotalPages;
+  const pageNum=parseInt(document.getElementById("pdfWordPage").value)||1;
   const page=await pdfDoc.getPage(pageNum);
-  const viewport=page.getViewport({scale:2});
-  const canvas=document.getElementById("pdfCanvas");
-  canvas.width=viewport.width; canvas.height=viewport.height;
-  const ctx=canvas.getContext("2d");
-  await page.render({canvasContext:ctx, viewport}).promise;
-  canvas.toBlob(blob=>{
-    const a=document.createElement("a");
-    a.href=URL.createObjectURL(blob);
-    a.download=file.name.replace(/\.[^/.]+$/,"")+"_page"+pageNum+".png";
-    a.click();
-    hideLoader();
-  });
-}
-
-// --- Word Preview ---
-document.getElementById("wordInput").addEventListener("change", async function(){
-  const preview=document.getElementById("wordPreview");
-  preview.innerHTML="";
-  if(!this.files.length) return;
-  const arrayBuffer=await this.files[0].arrayBuffer();
-  const {value:text}=await mammoth.extractRawText({arrayBuffer});
-  const p=document.createElement("p");
-  p.innerText=text.substring(0,500)+(text.length>500?"…":"");
-  preview.appendChild(p);
+  const textContent=await page.getTextContent();
+  const text=textContent.items.map(i=>i.str).join(" ");
+  const info=document.createElement("p"); info.innerText=text.substring(0,500)+(text.length>500?"…":""); p.appendChild(info);
 });
 
-// --- Word to PDF ---
-async function convertWordToPDF() {
-  const input=document.getElementById("wordInput");
-  if(!input.files.length) return alert("Select a Word file");
+// --- Conversion functions ---
+// Image → PDF
+async function convertImageToPDF(){
+  const input=document.getElementById("imageInput"); if(!input.files.length)return alert("Select an image");
+  try{showLoader("Converting Image to PDF…");
+    const file=input.files[0];
+    const data=await new Promise(r=>{const fr=new FileReader(); fr.onload=e=>r(e.target.result); fr.readAsDataURL(file);});
+    const pdf=new jspdf.jsPDF(); const imgProps=pdf.getImageProperties(data);
+    const w=pdf.internal.pageSize.getWidth(); const h=(imgProps.height*w)/imgProps.width;
+    pdf.addImage(data,'JPEG',0,0,w,h); pdf.save(file.name.replace(/\.[^/.]+$/,"")+".pdf");
+  }catch(e){alert("Error: "+e);}finally{hideLoader();}
+}
+
+// PDF → Image
+async function convertPDFToImage(){
+  const input=document.getElementById("pdfInput"); if(!input.files.length)return alert("Select a PDF");
+  const pageNum=parseInt(document.getElementById("pageNumber").value)||1;
+  if(pageNum>pdfTotalPages)return alert("Page number exceeds total pages");
+  showLoader("Converting PDF to Image…");
+  const page=await pdfDoc.getPage(pageNum);
+  const viewport=page.getViewport({scale:2}); const canvas=document.createElement("canvas");
+  canvas.width=viewport.width; canvas.height=viewport.height; const ctx=canvas.getContext("2d");
+  await page.render({canvasContext:ctx,viewport}).promise;
+  canvas.toBlob(blob=>{const a=document.createElement("a"); a.href=URL.createObjectURL(blob); a.download=input.files[0].name.replace(/\.[^/.]+$/,"")+"_page"+pageNum+".png"; a.click(); hideLoader();});
+}
+
+// Word → PDF
+async function convertWordToPDF(){
+  const input=document.getElementById("wordInput"); if(!input.files.length)return alert("Select Word file");
   showLoader("Converting Word to PDF…");
-  const file=input.files[0];
-  const arrayBuffer=await file.arrayBuffer();
-  const {value: text}=await mammoth.extractRawText({arrayBuffer});
-  const pdf=new jspdf.jsPDF();
-  const lines=pdf.splitTextToSize(text,180);
-  pdf.text(lines,10,10);
-  pdf.save(file.name.replace(/\.[^/.]+$/,"")+".pdf");
-  hideLoader();
+  try{const arr=await input.files[0].arrayBuffer(); const {value:text}=await mammoth.extractRawText({arrayBuffer:arr});
+    const pdf=new jspdf.jsPDF(); const lines=pdf.splitTextToSize(text,180); pdf.text(lines,10,10); pdf.save(input.files[0].name.replace(/\.[^/.]+$/,"")+".pdf");
+  }catch(e){alert("Error: "+e);}finally{hideLoader();}
 }
 
-// --- PDF to Word ---
-document.getElementById("pdfWordInput").addEventListener("change", async function(){
-  const preview=document.getElementById("pdfWordPreview");
-  preview.innerHTML="";
-  if(!this.files.length) return;
-  const arrayBuffer=await this.files[0].arrayBuffer();
-  const pdfDoc=await pdfLib.PDFDocument.load(arrayBuffer);
-  let fullText="";
-  pdfDoc.getPages().forEach(p=>{
-    const content=p.getTextContent?.();
-    if(content && content.items) fullText+=content.items.map(i=>i.str).join(" ")+"\n\n";
-  });
-  const p=document.createElement("p");
-  p.innerText=fullText.substring(0,500)+(fullText.length>500?"…":"");
-  preview.appendChild(p);
-});
-
+// PDF → Word
 async function convertPDFToWord(){
-  const input=document.getElementById("pdfWordInput");
-  if(!input.files.length) return alert("Select a PDF");
+  const input=document.getElementById("pdfWordInput"); if(!input.files.length)return alert("Select PDF");
   showLoader("Converting PDF to Word…");
-  const file=input.files[0];
-  const arrayBuffer=await file.arrayBuffer();
-  const pdfDoc=await pdfLib.PDFDocument.load(arrayBuffer);
-  let fullText="";
-  pdfDoc.getPages().forEach(p=>{
-    const content=p.getTextContent?.();
-    if(content && content.items) fullText+=content.items.map(i=>i.str).join(" ")+"\n\n";
-  });
-  const doc=new docx.Document({sections:[{children:[new docx.Paragraph(fullText)]}]});
-  const blob=await docx.Packer.toBlob(doc);
-  const a=document.createElement("a");
-  a.href=URL.createObjectURL(blob);
-  a.download=file.name.replace(/\.[^/.]+$/,"")+".docx";
-  a.click();
-  hideLoader();
+  try{
+    const pageNum=parseInt(document.getElementById("pdfWordPage").value)||1;
+    const page=await pdfDoc.getPage(pageNum);
+    const textContent=await page.getTextContent();
+    const text=textContent.items.map(i=>i.str).join("\n");
+    const doc=new docx.Document({sections:[{children:[new docx.Paragraph(text)]}]});
+    const blob=await docx.Packer.toBlob(doc);
+    const a=document.createElement("a"); a.href=URL.createObjectURL(blob);
+    a.download=input.files[0].name.replace(/\.[^/.]+$/,"")+".docx"; a.click();
+  }catch(e){alert("Error: "+e);}finally{hideLoader();}
 }
 
-// --- Other PDF Tools (Merge/Split/Rotate) remain same as previous version ---
-async function mergePDFs() {
-  const input=document.getElementById("mergePdfInput");
-  if(!input.files.length) return alert("Select PDFs");
+// Merge PDF
+async function mergePDFs(){
+  const input=document.getElementById("mergePdfInput"); if(!input.files.length)return alert("Select PDFs");
   showLoader("Merging PDFs…");
-  const mergedPdf=await pdfLib.PDFDocument.create();
-  for(const f of input.files){
-    const pdfBytes=await f.arrayBuffer();
-    const pdf=await pdfLib.PDFDocument.load(pdfBytes);
-    const copiedPages=await mergedPdf.copyPages(pdf,pdf.getPageIndices());
-    copiedPages.forEach(p=>mergedPdf.addPage(p));
+  const merged=await PDFLib.PDFDocument.create();
+  for(const f of input.files){const arr=await f.arrayBuffer(); const pdf=await PDFLib.PDFDocument.load(arr);
+    const pages=await merged.copyPages(pdf,pdf.getPageIndices()); pages.forEach(p=>merged.addPage(p));
   }
-  const bytes=await mergedPdf.save();
-  const a=document.createElement("a");
-  a.href=URL.createObjectURL(new Blob([bytes],{type:"application/pdf"}));
-  a.download="merged.pdf"; a.click();
-  hideLoader();
+  const bytes=await merged.save(); const a=document.createElement("a"); a.href=URL.createObjectURL(new Blob([bytes],{type:"application/pdf"}));
+  a.download="merged.pdf"; a.click(); hideLoader();
 }
 
-async function splitPDF() {
-  const input=document.getElementById("splitPdfInput");
-  if(!input.files.length) return alert("Select a PDF");
-  showLoader("Splitting PDF…");
-  const file=input.files[0];
-  const arrayBuffer=await file.arrayBuffer();
-  const pdf=await pdfLib.PDFDocument.load(arrayBuffer);
-  for(let i=0;i<pdf.getPageCount();i++){
-    const newPdf=await pdfLib.PDFDocument.create();
-    const [copiedPage]=await newPdf.copyPages(pdf,[i]);
-    newPdf.addPage(copiedPage);
-    const bytes=await newPdf.save();
-    const a=document.createElement("a");
+// Split PDF
+async function splitPDF(){
+  const input=document.getElementById("splitPdfInput"); if(!input.files.length)return alert("Select PDF");
+  showLoader("Splitting PDF…"); const file=input.files[0]; const arr=await file.arrayBuffer();
+  const pdf=await PDFLib.PDFDocument.load(arr);
+  for(let i=0;i<pdf.getPageCount();i++){const newPdf=await PDFLib.PDFDocument.create();
+    const [pg]=await newPdf.copyPages(pdf,[i]); newPdf.addPage(pg);
+    const bytes=await newPdf.save(); const a=document.createElement("a");
     a.href=URL.createObjectURL(new Blob([bytes],{type:"application/pdf"}));
     a.download=file.name.replace(/\.[^/.]+$/,"")+"_page"+(i+1)+".pdf"; a.click();
-  }
-  hideLoader();
+  } hideLoader();
 }
 
-async function rotatePDF() {
-  const input=document.getElementById("rotatePdfInput");
-  if(!input.files.length) return alert("Select a PDF");
-  showLoader("Rotating PDF…");
-  const file=input.files[0];
-  const angle=parseInt(document.getElementById("rotationAngle").value);
-  const pdf=await pdfLib.PDFDocument.load(await file.arrayBuffer());
-  pdf.getPages().forEach(p=>p.setRotation((p.getRotation().angle+angle)%360));
-  const bytes=await pdf.save();
-  const a=document.createElement("a");
-  a.href=URL.createObjectURL(new Blob([bytes],{type:"application/pdf"}));
-  a.download=file.name.replace(/\.[^/.]+$/,"")+"_rotated.pdf"; a.click();
-  hideLoader();
+// Rotate PDF
+async function rotatePDF(){
+  const input=document.getElementById("rotatePdfInput"); if(!input.files.length)return alert("Select PDF");
+  showLoader("Rotating PDF…"); const file=input.files[0]; const angle=parseInt(document.getElementById("rotationAngle").value);
+  const pdf=await PDFLib.PDFDocument.load(await file.arrayBuffer()); pdf.getPages().forEach(p=>p.setRotation((p.getRotation().angle+angle)%360));
+  const bytes=await pdf.save(); const a=document.createElement("a");
+  a.href=URL.createObjectURL(new Blob([bytes],{type:"application/pdf"})); a.download=file.name.replace(/\.[^/.]+$/,"")+"_rotated.pdf"; a.click(); hideLoader();
 }
 </script>
 </body>
