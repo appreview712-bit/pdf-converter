@@ -130,8 +130,9 @@
 
 <div class="tool">
   <h2>PDF to Image</h2>
-  <p>Convert first page of PDF to image (single page).</p>
+  <p>Convert selected PDF page to image (1–5 only).</p>
   <input type="file" id="pdfInput" accept="application/pdf">
+  <input type="number" id="pageNumber" min="1" max="5" value="1">
   <button onclick="convertPDFToImage()">Convert PDF</button>
   <canvas id="pdfCanvas" style="display:none;"></canvas>
 </div>
@@ -231,8 +232,17 @@ function convertImageToPDF() {
 /* PDF TO IMAGE */
 function convertPDFToImage() {
   const input = document.getElementById("pdfInput");
+  const pageInput = document.getElementById("pageNumber");
+
   if (!input.files.length) {
     alert("Select a PDF file");
+    return;
+  }
+
+  const pageNum = parseInt(pageInput.value);
+
+  if (pageNum < 1 || pageNum > 5) {
+    alert("Please choose a page number between 1 and 5");
     return;
   }
 
@@ -241,7 +251,13 @@ function convertPDFToImage() {
     const typedarray = new Uint8Array(this.result);
 
     pdfjsLib.getDocument(typedarray).promise.then(pdf => {
-      pdf.getPage(1).then(page => {
+
+      if (pageNum > pdf.numPages) {
+        alert("This PDF has only " + pdf.numPages + " pages");
+        return;
+      }
+
+      pdf.getPage(pageNum).then(page => {
         const viewport = page.getViewport({ scale: 2 });
         const canvas = document.getElementById("pdfCanvas");
         const ctx = canvas.getContext("2d");
@@ -250,14 +266,16 @@ function convertPDFToImage() {
         canvas.height = viewport.height;
 
         page.render({ canvasContext: ctx, viewport }).promise.then(() => {
+          const imageURL = canvas.toDataURL("image/png");
           const link = document.createElement("a");
-          link.href = canvas.toDataURL("image/png");
-          link.download = "pdf-page.png";
+          link.href = imageURL;
+          link.download = "pdf-page-" + pageNum + ".png";
           link.click();
         });
       });
     });
   };
+
   reader.readAsArrayBuffer(input.files[0]);
 }
 
