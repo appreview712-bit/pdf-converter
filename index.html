@@ -11,82 +11,100 @@
 
   body {
     margin: 0;
-    font-family: "Segoe UI", Arial, sans-serif;
-    background: #f1f5f9;
+    font-family: "Inter", Arial, sans-serif;
+    background: #eef2f7;
     color: #0f172a;
   }
 
   header {
-    background: linear-gradient(135deg, #2563eb, #1e40af);
+    background: linear-gradient(120deg, #2563eb, #3b82f6);
     color: white;
-    padding: 35px 20px;
+    padding: 50px 20px;
     text-align: center;
   }
 
   header h1 {
     margin: 0;
-    font-size: 32px;
+    font-size: 36px;
+    letter-spacing: 0.5px;
   }
 
   header p {
-    margin-top: 8px;
-    opacity: 0.9;
+    margin-top: 12px;
+    font-size: 16px;
+    opacity: 0.95;
   }
 
   .tools {
-    max-width: 1100px;
-    margin: 40px auto;
+    max-width: 1200px;
+    margin: -30px auto 40px;
     padding: 0 20px;
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 25px;
   }
 
   .tool {
     background: white;
-    border-radius: 14px;
-    padding: 25px 20px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.08);
-    transition: transform 0.2s, box-shadow 0.2s;
+    border-radius: 18px;
+    padding: 30px 25px;
+    box-shadow: 0 12px 30px rgba(0,0,0,0.08);
     text-align: center;
+    transition: all 0.25s ease;
   }
 
   .tool:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 15px 35px rgba(0,0,0,0.12);
+    transform: translateY(-6px);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.12);
   }
 
   .tool h2 {
-    margin-top: 0;
-    font-size: 20px;
+    font-size: 22px;
+    margin-bottom: 10px;
+  }
+
+  .tool p {
+    font-size: 14px;
+    color: #475569;
+    margin-bottom: 20px;
   }
 
   .tool input {
     width: 100%;
-    margin: 15px 0;
+    margin-bottom: 15px;
   }
 
   button {
     width: 100%;
-    padding: 12px;
-    background: #2563eb;
+    padding: 14px;
+    background: linear-gradient(135deg, #2563eb, #1e40af);
     color: white;
     border: none;
-    border-radius: 8px;
+    border-radius: 10px;
     font-size: 15px;
     cursor: pointer;
+    transition: background 0.2s;
   }
 
   button:hover {
-    background: #1e40af;
+    background: linear-gradient(135deg, #1e40af, #1e3a8a);
+  }
+
+  .badge {
+    display: inline-block;
+    background: #e0e7ff;
+    color: #1e40af;
+    font-size: 12px;
+    padding: 4px 10px;
+    border-radius: 999px;
+    margin-bottom: 10px;
   }
 
   footer {
     text-align: center;
-    padding: 20px;
+    padding: 25px 15px;
     font-size: 14px;
     color: #64748b;
-    margin-top: 40px;
   }
 </style>
 </head>
@@ -96,28 +114,38 @@
     <p>Free Online Document Converter</p>
   </header>
 
-  <main class="tools">
-    <div class="tool">
-      <h2>Image to PDF</h2>
-      <input type="file" id="imageInput" accept="image/*" />
-      <button onclick="convertImageToPDF()">Convert</button>
-    </div>
+<main class="tools">
 
-    <div class="tool">
-      <h2>PDF to PPT</h2>
-      <p>Coming Soon</p>
-    </div>
+  <div class="tool">
+    <div class="badge">Popular</div>
+    <h2>Image to PDF</h2>
+    <p>Convert JPG or PNG images into a high-quality PDF file.</p>
+    <input type="file" id="imageInput" accept="image/*">
+    <button onclick="convertImageToPDF()">Convert Image</button>
+  </div>
 
-    <div class="tool">
-      <h2>PPT to PDF</h2>
-      <p>Coming Soon</p>
-    </div>
+  <div class="tool">
+    <div class="badge">PDF</div>
+    <h2>PDF to PPT</h2>
+    <p>Turn your PDF documents into editable PowerPoint slides.</p>
+    <button disabled>Coming Soon</button>
+  </div>
 
-    <div class="tool">
-      <h2>PDF to Word</h2>
-      <p>Coming Soon</p>
-    </div>
-  </main>
+  <div class="tool">
+    <div class="badge">Office</div>
+    <h2>PPT to PDF</h2>
+    <p>Convert PowerPoint presentations into PDF format.</p>
+    <button disabled>Coming Soon</button>
+  </div>
+
+  <div class="tool">
+    <div class="badge">Text</div>
+    <h2>PDF to Word</h2>
+    <p>Make your PDF files editable by converting them to Word.</p>
+    <button disabled>Coming Soon</button>
+  </div>
+
+</main>
 
   <footer>
     <p>© 2025 DocConvertly. All rights reserved.</p>
