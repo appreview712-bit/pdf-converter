@@ -130,42 +130,44 @@
 
 <div class="tool">
   <h2>PDF to Image</h2>
-  <p>Convert the first page of a PDF into an image.</p>
+  <p>Convert first page of PDF to image (single page).</p>
   <input type="file" id="pdfInput" accept="application/pdf">
   <button onclick="convertPDFToImage()">Convert PDF</button>
   <canvas id="pdfCanvas" style="display:none;"></canvas>
 </div>
 
   <div class="tool">
-    <h2>PDF to Word</h2>
-    <p>Convert PDFs into editable Word files.</p>
-    <button disabled>Coming Soon</button>
+  <h2>PDF to Word</h2>
+  <p>Extract text from PDF and download as Word (.docx).</p>
+  <input type="file" id="pdfWordInput" accept="application/pdf">
+  <button onclick="convertPDFToWord()">Convert PDF</button>
   </div>
 
   <div class="tool">
   <h2>Word to PDF</h2>
-  <p>Convert simple DOCX files to PDF (text-based).</p>
+  <p>Convert DOCX text to PDF (no images or tables).</p>
   <input type="file" id="wordInput" accept=".docx">
   <button onclick="convertWordToPDF()">Convert Word</button>
   </div>
 
   <div class="tool">
     <h2>PDF to PPT</h2>
-    <p>Turn PDF pages into PowerPoint slides.</p>
+    <p>Basic size reduction (advanced coming later).</p>
     <button disabled>Coming Soon</button>
   </div>
 
   <div class="tool">
     <h2>PPT to PDF</h2>
-    <p>Convert PowerPoint presentations to PDF.</p>
+    <p>Basic size reduction (advanced coming later).</p>
     <button disabled>Coming Soon</button>
   </div>
 
-  <div class="tool">
-    <h2>Merge PDF</h2>
-    <p>Combine multiple PDF files into one.</p>
-    <button disabled>Coming Soon</button>
-  </div>
+<div class="tool">
+  <h2>Merge PDF</h2>
+  <p>Merge multiple PDF files into one (order matters).</p>
+  <input type="file" id="mergePdfInput" accept="application/pdf" multiple>
+  <button onclick="mergePDFs()">Merge PDFs</button>
+</div>
 
   <div class="tool">
     <h2>Split PDF</h2>
@@ -175,7 +177,7 @@
 
   <div class="tool">
     <h2>Compress PDF</h2>
-    <p>Reduce PDF file size easily.</p>
+    <p>Basic size reduction (advanced coming later).</p>
     <button disabled>Coming Soon</button>
   </div>
 
@@ -283,5 +285,78 @@ function convertWordToPDF() {
   reader.readAsArrayBuffer(input.files[0]);
 }
 </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/docx/8.2.2/docx.min.js"></script>
+  <script>
+function convertPDFToWord() {
+  const input = document.getElementById("pdfWordInput");
+
+  if (!input.files.length) {
+    alert("Please select a PDF file");
+    return;
+  }
+
+  const reader = new FileReader();
+  reader.onload = async function () {
+    const typedarray = new Uint8Array(this.result);
+    const pdf = await pdfjsLib.getDocument(typedarray).promise;
+
+    let fullText = "";
+
+    for (let i = 1; i <= pdf.numPages; i++) {
+      const page = await pdf.getPage(i);
+      const content = await page.getTextContent();
+      const strings = content.items.map(item => item.str);
+      fullText += strings.join(" ") + "\n\n";
+    }
+
+    const { Document, Packer, Paragraph } = docx;
+
+    const doc = new Document({
+      sections: [{
+        properties: {},
+        children: fullText.split("\n").map(line =>
+          new Paragraph(line)
+        )
+      }]
+    });
+
+    const blob = await Packer.toBlob(doc);
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = "pdf-to-word.docx";
+    link.click();
+  };
+
+  reader.readAsArrayBuffer(input.files[0]);
+}
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
+  <script>
+async function mergePDFs() {
+  const input = document.getElementById("mergePdfInput");
+
+  if (input.files.length < 2) {
+    alert("Please select at least 2 PDF files");
+    return;
+  }
+
+  const mergedPdf = await PDFLib.PDFDocument.create();
+
+  for (const file of input.files) {
+    const arrayBuffer = await file.arrayBuffer();
+    const pdf = await PDFLib.PDFDocument.load(arrayBuffer);
+    const pages = await mergedPdf.copyPages(pdf, pdf.getPageIndices());
+    pages.forEach(page => mergedPdf.addPage(page));
+  }
+
+  const mergedBytes = await mergedPdf.save();
+  const blob = new Blob([mergedBytes], { type: "application/pdf" });
+
+  const link = document.createElement("a");
+  link.href = URL.createObjectURL(blob);
+  link.download = "merged.pdf";
+  link.click();
+}
+  </script>
 </body>
 </html>
