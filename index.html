@@ -191,116 +191,97 @@
     <p>© 2025 DocConvertly. All rights reserved.</p>
   </footer>
 </body>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-  <script>
-  function convertImageToPDF() {
-    const { jsPDF } = window.jspdf;
-    const fileInput = document.getElementById("imageInput");
+<!-- jsPDF -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
-    if (fileInput.files.length === 0) {
-      alert("Please select an image first");
-      return;
-    }
+<!-- PDF.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
 
-    const file = fileInput.files[0];
-    const reader = new FileReader();
+<!-- Mammoth.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.4.21/mammoth.browser.min.js"></script>
 
-    reader.onload = function (e) {
-      const img = new Image();
-      img.src = e.target.result;
+<script>
+/* IMAGE TO PDF */
+function convertImageToPDF() {
+  const { jsPDF } = window.jspdf;
+  const fileInput = document.getElementById("imageInput");
 
-      img.onload = function () {
-        const pdf = new jsPDF();
-        const width = pdf.internal.pageSize.getWidth();
-        const height = (img.height * width) / img.width;
-
-        pdf.addImage(img, "JPEG", 0, 0, width, height);
-        pdf.save("converted.pdf");
-      };
-    };
-
-    reader.readAsDataURL(file);
+  if (!fileInput.files.length) {
+    alert("Please select an image first");
+    return;
   }
-  </script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
-  <script>
-  function convertPDFToImage() {
-    const fileInput = document.getElementById("pdfInput");
 
-    if (fileInput.files.length === 0) {
-      alert("Please select a PDF file");
-      return;
-    }
+  const reader = new FileReader();
+  reader.onload = e => {
+    const img = new Image();
+    img.src = e.target.result;
+    img.onload = () => {
+      const pdf = new jsPDF();
+      const width = pdf.internal.pageSize.getWidth();
+      const height = (img.height * width) / img.width;
+      pdf.addImage(img, "JPEG", 0, 0, width, height);
+      pdf.save("image-to-pdf.pdf");
+    };
+  };
+  reader.readAsDataURL(fileInput.files[0]);
+}
 
-    const file = fileInput.files[0];
-    const reader = new FileReader();
+/* PDF TO IMAGE */
+function convertPDFToImage() {
+  const input = document.getElementById("pdfInput");
+  if (!input.files.length) {
+    alert("Select a PDF file");
+    return;
+  }
 
-    reader.onload = function () {
-      const typedarray = new Uint8Array(this.result);
+  const reader = new FileReader();
+  reader.onload = function () {
+    const typedarray = new Uint8Array(this.result);
 
-      pdfjsLib.getDocument(typedarray).promise.then(pdf => {
-        pdf.getPage(1).then(page => {
-          const scale = 2;
-          const viewport = page.getViewport({ scale });
+    pdfjsLib.getDocument(typedarray).promise.then(pdf => {
+      pdf.getPage(1).then(page => {
+        const viewport = page.getViewport({ scale: 2 });
+        const canvas = document.getElementById("pdfCanvas");
+        const ctx = canvas.getContext("2d");
 
-          const canvas = document.getElementById("pdfCanvas");
-          const context = canvas.getContext("2d");
-          canvas.height = viewport.height;
-          canvas.width = viewport.width;
+        canvas.width = viewport.width;
+        canvas.height = viewport.height;
 
-          const renderContext = {
-            canvasContext: context,
-            viewport: viewport
-          };
-
-          page.render(renderContext).promise.then(() => {
-            const imgURL = canvas.toDataURL("image/png");
-
-            const link = document.createElement("a");
-            link.href = imgURL;
-            link.download = "pdf-page.png";
-            link.click();
-          });
+        page.render({ canvasContext: ctx, viewport }).promise.then(() => {
+          const link = document.createElement("a");
+          link.href = canvas.toDataURL("image/png");
+          link.download = "pdf-page.png";
+          link.click();
         });
       });
-    };
+    });
+  };
+  reader.readAsArrayBuffer(input.files[0]);
+}
 
-    reader.readAsArrayBuffer(file);
+/* WORD TO PDF */
+function convertWordToPDF() {
+  const input = document.getElementById("wordInput");
+
+  if (!input.files.length) {
+    alert("Please select a DOCX file");
+    return;
   }
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.4.21/mammoth.browser.min.js"></script>
-  <script>
-  function convertWordToPDF() {
-    const input = document.getElementById("wordInput");
 
-    if (input.files.length === 0) {
-      alert("Please select a Word (.docx) file");
-      return;
-    }
-
-    const file = input.files[0];
-    const reader = new FileReader();
-
-    reader.onload = function () {
-      mammoth.extractRawText({ arrayBuffer: reader.result })
-        .then(result => {
-          const text = result.value;
-
-          const { jsPDF } = window.jspdf;
-          const pdf = new jsPDF();
-
-          const lines = pdf.splitTextToSize(text, 180);
-          pdf.text(lines, 10, 10);
-          pdf.save("word-to-pdf.pdf");
-        })
-        .catch(err => {
-          alert("Conversion failed");
-          console.error(err);
-        });
-    };
-
-    reader.readAsArrayBuffer(file);
-  }
-  </script>
-  </script>
+  const reader = new FileReader();
+  reader.onload = function () {
+    mammoth.extractRawText({ arrayBuffer: reader.result })
+      .then(result => {
+        const { jsPDF } = window.jspdf;
+        const pdf = new jsPDF();
+        const lines = pdf.splitTextToSize(result.value, 180);
+        pdf.text(lines, 10, 10);
+        pdf.save("word-to-pdf.pdf");
+      })
+      .catch(() => alert("Conversion failed"));
+  };
+  reader.readAsArrayBuffer(input.files[0]);
+}
+</script>
 </body>
 </html>
