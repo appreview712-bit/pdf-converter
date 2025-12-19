@@ -166,15 +166,17 @@
 </div>
 
   <div class="tool">
-    <h2>Compress PDF</h2>
-    <p>Basic size reduction (advanced coming later).</p>
-    <button disabled>Coming Soon</button>
-  </div>
+  <h2>Rotate PDF</h2>
+  <p>Rotate all PDF pages by selected angle (max 10 pages).</p>
+  <input type="file" id="rotatePdfInput" accept="application/pdf">
 
-  <div class="tool">
-    <h2>Rotate PDF</h2>
-    <p>Rotate PDF pages online.</p>
-    <button disabled>Coming Soon</button>
+  <select id="rotationAngle" style="width:100%; padding:10px; margin-bottom:15px;">
+    <option value="90">Rotate 90°</option>
+    <option value="180">Rotate 180°</option>
+    <option value="270">Rotate 270°</option>
+  </select>
+
+  <button onclick="rotatePDF()">Rotate PDF</button>
   </div>
 
 </main>
@@ -404,6 +406,39 @@ async function splitPDF() {
     link.download = `page-${i + 1}.pdf`;
     link.click();
   }
+}
+  </script>
+  <script>
+async function rotatePDF() {
+  const input = document.getElementById("rotatePdfInput");
+  const angle = parseInt(document.getElementById("rotationAngle").value);
+
+  if (!input.files.length) {
+    alert("Please select a PDF file");
+    return;
+  }
+
+  const file = input.files[0];
+  const arrayBuffer = await file.arrayBuffer();
+  const pdfDoc = await PDFLib.PDFDocument.load(arrayBuffer);
+
+  if (pdfDoc.getPageCount() > 10) {
+    alert("Please upload a PDF with maximum 10 pages");
+    return;
+  }
+
+  const pages = pdfDoc.getPages();
+  pages.forEach(page => {
+    page.setRotation(PDFLib.degrees(angle));
+  });
+
+  const pdfBytes = await pdfDoc.save();
+  const blob = new Blob([pdfBytes], { type: "application/pdf" });
+
+  const link = document.createElement("a");
+  link.href = URL.createObjectURL(blob);
+  link.download = "rotated.pdf";
+  link.click();
 }
   </script>
 </body>
