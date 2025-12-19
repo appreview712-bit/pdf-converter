@@ -151,18 +151,6 @@
   <button onclick="convertWordToPDF()">Convert Word</button>
   </div>
 
-  <div class="tool">
-    <h2>PDF to PPT</h2>
-    <p>Basic size reduction (advanced coming later).</p>
-    <button disabled>Coming Soon</button>
-  </div>
-
-  <div class="tool">
-    <h2>PPT to PDF</h2>
-    <p>Basic size reduction (advanced coming later).</p>
-    <button disabled>Coming Soon</button>
-  </div>
-
 <div class="tool">
   <h2>Merge PDF</h2>
   <p>Merge multiple PDF files into one (order matters).</p>
@@ -193,7 +181,7 @@
   <footer>
     <p>© 2025 DocConvertly. All rights reserved.</p>
   </footer>
-</body>
+
 <!-- jsPDF -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
@@ -317,6 +305,10 @@ function convertPDFToWord() {
   reader.onload = async function () {
     const typedarray = new Uint8Array(this.result);
     const pdf = await pdfjsLib.getDocument(typedarray).promise;
+    if (pdf.numPages > 10) {
+  alert("Free version supports PDFs up to 10 pages only.");
+  return;
+    }
 
     let fullText = "";
 
@@ -376,5 +368,10 @@ async function mergePDFs() {
   link.click();
 }
   </script>
+  <script>
+pdfjsLib.GlobalWorkerOptions.workerSrc =
+  "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js";
+  </script>
+  
 </body>
 </html>
