@@ -128,11 +128,13 @@
     <button onclick="convertImageToPDF()">Convert</button>
   </div>
 
-  <div class="tool">
-    <h2>PDF to Image</h2>
-    <p>Extract images from PDF files.</p>
-    <button disabled>Coming Soon</button>
-  </div>
+<div class="tool">
+  <h2>PDF to Image</h2>
+  <p>Convert the first page of a PDF into an image.</p>
+  <input type="file" id="pdfInput" accept="application/pdf">
+  <button onclick="convertPDFToImage()">Convert PDF</button>
+  <canvas id="pdfCanvas" style="display:none;"></canvas>
+</div>
 
   <div class="tool">
     <h2>PDF to Word</h2>
@@ -219,6 +221,51 @@
     reader.readAsDataURL(file);
   }
   </script>
-  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
+  <script>
+  function convertPDFToImage() {
+    const fileInput = document.getElementById("pdfInput");
+
+    if (fileInput.files.length === 0) {
+      alert("Please select a PDF file");
+      return;
+    }
+
+    const file = fileInput.files[0];
+    const reader = new FileReader();
+
+    reader.onload = function () {
+      const typedarray = new Uint8Array(this.result);
+
+      pdfjsLib.getDocument(typedarray).promise.then(pdf => {
+        pdf.getPage(1).then(page => {
+          const scale = 2;
+          const viewport = page.getViewport({ scale });
+
+          const canvas = document.getElementById("pdfCanvas");
+          const context = canvas.getContext("2d");
+          canvas.height = viewport.height;
+          canvas.width = viewport.width;
+
+          const renderContext = {
+            canvasContext: context,
+            viewport: viewport
+          };
+
+          page.render(renderContext).promise.then(() => {
+            const imgURL = canvas.toDataURL("image/png");
+
+            const link = document.createElement("a");
+            link.href = imgURL;
+            link.download = "pdf-page.png";
+            link.click();
+          });
+        });
+      });
+    };
+
+    reader.readAsArrayBuffer(file);
+  }
+  </script>
 </body>
 </html>
