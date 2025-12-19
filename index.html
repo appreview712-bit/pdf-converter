@@ -1,106 +1,44 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>DocConvertly – Free Online PDF Tools</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="Convert images to PDF, PDF to PPT, PPT to PDF, and PDF to Word online for free.">
-<meta name="robots" content="index, follow">
-
-<!-- Security -->
-<meta http-equiv="Content-Security-Policy" content="
-      default-src 'self';
-      script-src 'self' https://cdnjs.cloudflare.com;
-      style-src 'self' 'unsafe-inline';
-      img-src 'self' data:;
-">
-
-<style>
-body{font-family:Arial,sans-serif;margin:0;background:#f4f6f8}
-header{background:#0f172a;color:#fff;padding:20px;text-align:center}
-.box{background:#fff;margin:15px;padding:15px;border-radius:8px}
-button{background:#2563eb;color:#fff;border:none;padding:10px;border-radius:5px;cursor:pointer}
-input[type="file"]{padding:5px}
-</style>
+  <meta charset="UTF-8">
+  <title>DocConvertly – Free PDF Tools</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body{font-family:Arial;margin:0;background:#f4f6f8}
+    header{background:#0f172a;color:#fff;padding:20px;text-align:center}
+    .box{background:#fff;margin:15px;padding:15px;border-radius:8px}
+    button{background:#2563eb;color:#fff;border:none;padding:10px;border-radius:5px}
+  </style>
 </head>
 <body>
 
 <header>
-<h1>DocConvertly</h1>
-<p>Free Online Document Converter</p>
+  <h1>DocConvertly</h1>
+  <p>Free Online Document Converter</p>
 </header>
 
-<!-- Image to PDF -->
-<div class="box">
-<h3>Image to PDF</h3>
-<input id="imageInput" type="file" accept="image/*" multiple /><br><br>
-<button onclick="convertImageToPDF()">Convert</button>
+<div class="tool">
+  <h2>Image to PDF</h2>
+  <input type="file" accept="image/*" />
+  <br><br>
+  <button onclick="alert('Feature will be added next')">Convert</button>
 </div>
 
-<!-- PDF to PPT -->
 <div class="box">
-<h3>PDF to PPT</h3>
-<input id="pdfToPptInput" type="file" accept="application/pdf" /><br><br>
-<button onclick="alert('PDF → PPT conversion requires server. Coming soon!')">Convert</button>
+  <h3>PDF to PPT</h3>
+  <button>Coming Soon</button>
 </div>
 
-<!-- PPT to PDF -->
 <div class="box">
-<h3>PPT to PDF</h3>
-<input id="pptToPdfInput" type="file" accept=".ppt,.pptx" /><br><br>
-<button onclick="alert('PPT → PDF conversion requires server. Coming soon!')">Convert</button>
+  <h3>PPT to PDF</h3>
+  <button>Coming Soon</button>
 </div>
 
-<!-- PDF to Word -->
 <div class="box">
-<h3>PDF to Word</h3>
-<input id="pdfToWordInput" type="file" accept="application/pdf" /><br><br>
-<button onclick="alert('PDF → Word extraction requires server. Coming soon!')">Convert</button>
+  <h3>PDF to Word</h3>
+  <button>Coming Soon</button>
 </div>
-
-<!-- Libraries -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
-
-<script>
-// Image to PDF - fully working on mobile & desktop
-async function convertImageToPDF() {
-  const input = document.getElementById("imageInput");
-  if (!input.files.length) {
-    alert("Please select at least one image");
-    return;
-  }
-
-  const pdf = new window.jspdf.jsPDF();
-
-  for (let i = 0; i < input.files.length; i++) {
-    const file = input.files[i];
-    const imgData = await readFileAsDataURL(file);
-    const img = new Image();
-    img.src = imgData;
-    await new Promise(resolve => img.onload = resolve);
-
-    const imgWidth = 190;
-    const imgHeight = img.height * (imgWidth / img.width);
-
-    if (i > 0) pdf.addPage();
-    pdf.addImage(img, 'JPEG', 10, 10, imgWidth, imgHeight);
-  }
-
-  // Save PDF using FileSaver.js for better mobile support
-  const pdfBlob = pdf.output('blob');
-  saveAs(pdfBlob, "converted.pdf");
-}
-
-// Helper function to read file as Data URL
-function readFileAsDataURL(file) {
-  return new Promise(resolve => {
-    const reader = new FileReader();
-    reader.onload = e => resolve(e.target.result);
-    reader.readAsDataURL(file);
-  });
-}
-</script>
 
 </body>
 </html>
