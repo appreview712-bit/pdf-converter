@@ -158,11 +158,12 @@
   <button onclick="mergePDFs()">Merge PDFs</button>
 </div>
 
-  <div class="tool">
-    <h2>Split PDF</h2>
-    <p>Split PDF pages into separate files.</p>
-    <button disabled>Coming Soon</button>
-  </div>
+<div class="tool">
+  <h2>Split PDF</h2>
+  <p>Split PDF into individual pages (max 10 pages).</p>
+  <input type="file" id="splitPdfInput" accept="application/pdf">
+  <button onclick="splitPDF()">Split PDF</button>
+</div>
 
   <div class="tool">
     <h2>Compress PDF</h2>
@@ -372,6 +373,38 @@ async function mergePDFs() {
 pdfjsLib.GlobalWorkerOptions.workerSrc =
   "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js";
   </script>
-  
+  <script>
+async function splitPDF() {
+  const input = document.getElementById("splitPdfInput");
+
+  if (!input.files.length) {
+    alert("Please select a PDF file");
+    return;
+  }
+
+  const file = input.files[0];
+  const arrayBuffer = await file.arrayBuffer();
+  const pdf = await PDFLib.PDFDocument.load(arrayBuffer);
+
+  if (pdf.getPageCount() > 10) {
+    alert("Please upload a PDF with maximum 10 pages");
+    return;
+  }
+
+  for (let i = 0; i < pdf.getPageCount(); i++) {
+    const newPdf = await PDFLib.PDFDocument.create();
+    const [copiedPage] = await newPdf.copyPages(pdf, [i]);
+    newPdf.addPage(copiedPage);
+
+    const pdfBytes = await newPdf.save();
+    const blob = new Blob([pdfBytes], { type: "application/pdf" });
+
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = `page-${i + 1}.pdf`;
+    link.click();
+  }
+}
+  </script>
 </body>
 </html>
