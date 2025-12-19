@@ -143,9 +143,10 @@
   </div>
 
   <div class="tool">
-    <h2>Word to PDF</h2>
-    <p>Create PDFs from Word documents.</p>
-    <button disabled>Coming Soon</button>
+  <h2>Word to PDF</h2>
+  <p>Convert simple DOCX files to PDF (text-based).</p>
+  <input type="file" id="wordInput" accept=".docx">
+  <button onclick="convertWordToPDF()">Convert Word</button>
   </div>
 
   <div class="tool">
@@ -266,6 +267,40 @@
 
     reader.readAsArrayBuffer(file);
   }
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.4.21/mammoth.browser.min.js"></script>
+  <script>
+  function convertWordToPDF() {
+    const input = document.getElementById("wordInput");
+
+    if (input.files.length === 0) {
+      alert("Please select a Word (.docx) file");
+      return;
+    }
+
+    const file = input.files[0];
+    const reader = new FileReader();
+
+    reader.onload = function () {
+      mammoth.extractRawText({ arrayBuffer: reader.result })
+        .then(result => {
+          const text = result.value;
+
+          const { jsPDF } = window.jspdf;
+          const pdf = new jsPDF();
+
+          const lines = pdf.splitTextToSize(text, 180);
+          pdf.text(lines, 10, 10);
+          pdf.save("word-to-pdf.pdf");
+        })
+        .catch(err => {
+          alert("Conversion failed");
+          console.error(err);
+        });
+    };
+
+    reader.readAsArrayBuffer(file);
+  }
+  </script>
   </script>
 </body>
 </html>
