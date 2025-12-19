@@ -5,98 +5,116 @@
 <title>DocConvertly – Free PDF Tools</title>
 
 <!-- SEO -->
-<meta name="description" content="Free online PDF tools – Image to PDF, PDF to Word, Merge, Split, Rotate PDFs. No upload. 100% browser-based.">
-<meta name="keywords" content="image to pdf, pdf to word, split pdf, merge pdf, free pdf tools">
-<meta name="author" content="DocConvertly">
+<meta name="description" content="Free online PDF tools. Image to PDF, PDF to Word, Merge, Split, Rotate. No uploads. Works offline.">
+<meta name="keywords" content="image to pdf, pdf tools, merge pdf, split pdf">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#2563eb">
 
-<!-- ADS READY -->
-<meta name="google-adsense-account" content="ca-pub-XXXXXXXXXXXXXXXX">
+<!-- PWA -->
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-192.png">
 
 <style>
 *{box-sizing:border-box}
 body{margin:0;font-family:Arial;background:#eef2f7;color:#0f172a}
-header{background:#2563eb;color:#fff;padding:35px;text-align:center}
-.tools{max-width:1100px;margin:-20px auto 40px;padding:0 20px;display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px}
-.tool{background:#fff;padding:20px;border-radius:14px;box-shadow:0 10px 25px rgba(0,0,0,.1)}
-.tool h2{margin-top:0}
-input,select{width:100%;padding:10px;margin-bottom:10px}
-button{padding:12px;width:100%;border:none;border-radius:8px;background:#2563eb;color:#fff;font-size:15px;cursor:pointer}
-button:hover{background:#1e40af}
-footer{text-align:center;padding:20px;color:#64748b}
+header{background:#2563eb;color:#fff;padding:30px;text-align:center}
+header button{margin:5px;padding:10px 14px;border:none;border-radius:8px;background:#1e40af;color:#fff}
+.tools{max-width:1100px;margin:20px auto;padding:0 15px;display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:15px}
+.tool{background:#fff;padding:20px;border-radius:14px;box-shadow:0 8px 20px rgba(0,0,0,.1)}
+button,input,select{width:100%;padding:10px;margin-top:8px}
+button{background:#2563eb;color:#fff;border:none;border-radius:8px;cursor:pointer}
+footer{text-align:center;padding:15px;color:#64748b}
 
 /* Loader */
-#loader{position:fixed;inset:0;background:rgba(255,255,255,.9);display:none;align-items:center;justify-content:center;flex-direction:column;z-index:999}
-.spinner{width:50px;height:50px;border:5px solid #c7d2fe;border-top:5px solid #2563eb;border-radius:50%;animation:spin 1s linear infinite}
+#loader{position:fixed;inset:0;background:#ffffffdd;display:none;align-items:center;justify-content:center;flex-direction:column;z-index:999}
+.spinner{width:45px;height:45px;border:5px solid #c7d2fe;border-top:5px solid #2563eb;border-radius:50%;animation:spin 1s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
 
-/* Popup */
-#popup{position:fixed;inset:0;background:rgba(0,0,0,.4);display:none;align-items:center;justify-content:center;z-index:1000}
-.popup-box{background:#fff;padding:20px;border-radius:12px;max-width:300px;text-align:center}
-.popup-box button{margin-top:10px}
+/* Popups */
+#popup,#limits{position:fixed;inset:0;background:rgba(0,0,0,.4);display:none;align-items:center;justify-content:center;z-index:1000}
+.box{background:#fff;padding:20px;border-radius:12px;max-width:320px;text-align:center}
+.box button{margin-top:10px}
 </style>
 </head>
 
 <body>
 
+<!-- Loader -->
 <div id="loader">
   <div class="spinner"></div>
   <p id="loaderText">Processing…</p>
 </div>
 
+<!-- Error Popup -->
 <div id="popup">
-  <div class="popup-box">
+  <div class="box">
     <p id="popupText"></p>
     <button onclick="closePopup()">OK</button>
   </div>
 </div>
 
+<!-- Limits Popup -->
+<div id="limits">
+  <div class="box">
+    <h3>Website Limits</h3>
+    <p>
+      • Max file size: ~20–30 MB<br>
+      • PDF → Word = text only<br>
+      • Scanned PDFs not supported<br>
+      • No cloud storage
+    </p>
+    <button onclick="closeLimits()">OK</button>
+  </div>
+</div>
+
 <header>
-<h1>DocConvertly</h1>
-<p>Free Online Document Converter – No Upload</p>
+  <h1>DocConvertly</h1>
+  <p>Free • No Upload • Client-Side Only</p>
+  <button onclick="showLimits()">Know Limits</button>
+  <button id="installBtn" style="display:none">Install App</button>
 </header>
 
 <main class="tools">
 
 <div class="tool">
-<h2>Image → PDF</h2>
+<h3>Image → PDF</h3>
 <input type="file" id="imageInput" accept="image/*">
 <button onclick="imageToPDF()">Convert</button>
 </div>
 
 <div class="tool">
-<h2>PDF → Image</h2>
+<h3>PDF → Image</h3>
 <input type="file" id="pdfInput" accept="application/pdf">
-<input type="number" id="pageNo" min="1" value="1">
+<input type="number" id="pageNo" value="1" min="1">
 <button onclick="pdfToImage()">Convert</button>
 </div>
 
 <div class="tool">
-<h2>Word → PDF</h2>
+<h3>Word → PDF</h3>
 <input type="file" id="wordInput" accept=".docx">
 <button onclick="wordToPDF()">Convert</button>
 </div>
 
 <div class="tool">
-<h2>PDF → Word</h2>
+<h3>PDF → Word</h3>
 <input type="file" id="pdfWordInput" accept="application/pdf">
 <button onclick="pdfToWord()">Convert</button>
 </div>
 
 <div class="tool">
-<h2>Merge PDFs</h2>
+<h3>Merge PDFs</h3>
 <input type="file" id="mergeInput" accept="application/pdf" multiple>
 <button onclick="mergePDF()">Merge</button>
 </div>
 
 <div class="tool">
-<h2>Split PDF (ZIP)</h2>
+<h3>Split PDF (ZIP)</h3>
 <input type="file" id="splitInput" accept="application/pdf">
-<button onclick="splitPDF()">Split & ZIP</button>
+<button onclick="splitPDF()">Split</button>
 </div>
 
 <div class="tool">
-<h2>Rotate PDF</h2>
+<h3>Rotate PDF</h3>
 <input type="file" id="rotateInput" accept="application/pdf">
 <select id="angle">
 <option value="90">90°</option>
@@ -114,30 +132,29 @@ footer{text-align:center;padding:20px;color:#64748b}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.4.21/mammoth.browser.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/docx/8.2.2/docx.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 
 <script>
 pdfjsLib.GlobalWorkerOptions.workerSrc =
 "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js";
-
 const { jsPDF } = window.jspdf;
 
-/* Helpers */
+/* helpers */
 function showLoader(t){loaderText.innerText=t;loader.style.display="flex"}
 function hideLoader(){loader.style.display="none"}
-function popup(msg){popupText.innerText=msg;popup.style.display="flex"}
+function popup(m){popupText.innerText=m;popup.style.display="flex"}
 function closePopup(){popup.style.display="none"}
+function showLimits(){limits.style.display="flex"}
+function closeLimits(){limits.style.display="none"}
 
-/* Image → PDF (NO CUT) */
+/* Image → PDF (NO CUTTING) */
 async function imageToPDF(){
-const f=imageInput.files[0]; if(!f) return popup("Please select an image file");
+const f=imageInput.files[0]; if(!f) return popup("Select an image file");
 showLoader("Converting image…");
-const data=await f.arrayBuffer();
-const img=new Image();
-img.src=URL.createObjectURL(new Blob([data]));
+const img=new Image(); img.src=URL.createObjectURL(f);
 img.onload=()=>{
 const pdf=new jsPDF();
 const pw=pdf.internal.pageSize.getWidth();
@@ -145,7 +162,7 @@ const ph=pdf.internal.pageSize.getHeight();
 const r=Math.min(pw/img.width,ph/img.height);
 pdf.addImage(img,"JPEG",(pw-img.width*r)/2,(ph-img.height*r)/2,img.width*r,img.height*r);
 pdf.save("image.pdf"); hideLoader();
-}
+};
 }
 
 /* PDF → Image */
@@ -175,7 +192,7 @@ pdf.text(pdf.splitTextToSize(t.value,180),10,10);
 pdf.save("word.pdf"); hideLoader();
 }
 
-/* PDF → Word (Text only) */
+/* PDF → Word (text only) */
 async function pdfToWord(){
 const f=pdfWordInput.files[0]; if(!f) return popup("Select a PDF file");
 showLoader("Extracting text…");
@@ -214,7 +231,7 @@ a.download="merged.pdf"; a.click(); hideLoader();
 async function splitPDF(){
 const f=splitInput.files[0];
 if(!f) return popup("Select a PDF file");
-showLoader("Splitting & zipping…");
+showLoader("Splitting PDF…");
 const zip=new JSZip();
 const pdf=await PDFLib.PDFDocument.load(await f.arrayBuffer());
 for(let i=0;i<pdf.getPageCount();i++){
@@ -238,6 +255,19 @@ pdf.getPages().forEach(p=>p.setRotation((p.getRotation().angle+Number(angle.valu
 const a=document.createElement("a");
 a.href=URL.createObjectURL(new Blob([await pdf.save()],{type:"application/pdf"}));
 a.download="rotated.pdf"; a.click(); hideLoader();
+}
+</script>
+
+<!-- PWA -->
+<script>
+let deferredPrompt;
+window.addEventListener("beforeinstallprompt",e=>{
+e.preventDefault(); deferredPrompt=e;
+installBtn.style.display="inline-block";
+});
+installBtn.onclick=()=>deferredPrompt.prompt();
+if("serviceWorker"in navigator){
+navigator.serviceWorker.register("service-worker.js");
 }
 </script>
 
