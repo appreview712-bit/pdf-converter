@@ -198,13 +198,43 @@ hideLoader();
 
 /* Word → PDF */
 async function wordToPDF(){
-const f=wordInput.files[0]; if(!f) return popup("Select a Word file");
-showLoader("Converting Word…");
-const t=await mammoth.extractRawText({arrayBuffer:await f.arrayBuffer()});
-const pdf=new jsPDF();
-pdf.text(pdf.splitTextToSize(t.value,180),10,10);
-pdf.save("word.pdf"); hideLoader();
-}
+  const f = wordInput.files[0];
+  if(!f) return popup("Select a Word (.docx) file");
+
+  showLoader("Converting Word to PDF…");
+
+  try{
+    const result = await mammoth.extractRawText({
+      arrayBuffer: await f.arrayBuffer()
+    });
+
+    const pdf = new jsPDF({
+      unit: "mm",
+      format: "a4"
+    });
+
+    const margin = 15;
+    const pageWidth = pdf.internal.pageSize.getWidth() - margin * 2;
+    const textLines = pdf.splitTextToSize(result.value, pageWidth);
+
+    let y = margin;
+    textLines.forEach(line=>{
+      if(y > 280){
+        pdf.addPage();
+        y = margin;
+      }
+      pdf.text(line, margin, y);
+      y += 7;
+    });
+
+    pdf.save("word.pdf");
+    hideLoader();
+
+  }catch(e){
+    hideLoader();
+    popup("Only simple text DOCX supported (no tables/images)");
+  }
+  }
 
 /* PDF → Word (text only) */
 async function pdfToWord(){
@@ -262,13 +292,30 @@ hideLoader();
 
 /* Rotate PDF */
 async function rotatePDF(){
-const f=rotateInput.files[0]; if(!f) return popup("Select a PDF file");
-showLoader("Rotating PDF…");
-const pdf=await PDFLib.PDFDocument.load(await f.arrayBuffer());
-pdf.getPages().forEach(p=>p.setRotation((p.getRotation().angle+Number(angle.value))%360));
-const a=document.createElement("a");
-a.href=URL.createObjectURL(new Blob([await pdf.save()],{type:"application/pdf"}));
-a.download="rotated.pdf"; a.click(); hideLoader();
+  const f = rotateInput.files[0];
+  if(!f) return popup("Select a PDF file");
+
+  showLoader("Rotating all pages…");
+
+  try{
+    const pdf = await PDFLib.PDFDocument.load(await f.arrayBuffer());
+    const rotation = Number(angle.value);
+
+    pdf.getPages().forEach(p=>{
+      p.setRotation(PDFLib.degrees(rotation));
+    });
+
+    const blob = new Blob([await pdf.save()], {type:"application/pdf"});
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = "rotated.pdf";
+    a.click();
+
+    hideLoader();
+  }catch{
+    hideLoader();
+    popup("Unable to rotate this PDF");
+  }
 }
 </script>
 
