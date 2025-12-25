@@ -1,41 +1,56 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <meta charset="UTF-8">
+  <title>DocConvertly – Free PDF Tools</title>
+
+  <!-- Google Site Verification -->
   <meta name="google-site-verification" content="fynbHLBJZSMhwkvLXi8FlZtKTQKq9h6PB3_ImpmNPpI" />
-<meta charset="UTF-8">
-<title>DocConvertly – Free PDF Tools</title>
 
-<!-- SEO -->
-<meta name="description" content="Free online PDF tools. Image to PDF, PDF to Word, Merge, Split, Rotate. No uploads. Works offline.">
-<meta name="keywords" content="image to pdf, pdf tools, merge pdf, split pdf">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#2563eb">
+  <!-- SEO Meta Tags -->
+  <meta name="description" content="Free online PDF tools. Image to PDF, PDF to Word, Merge, Split, Rotate. No uploads. Works offline.">
+  <meta name="keywords" content="image to pdf, pdf tools, merge pdf, split pdf">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#2563eb">
 
-<!-- PWA -->
-<link rel="manifest" href="manifest.json">
-<link rel="apple-touch-icon" href="icon-192.png">
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="DocConvertly – Free PDF Tools">
+  <meta property="og:description" content="Convert Image to PDF, PDF to Word, PDF to Image, merge, split, and rotate PDFs directly in your browser. Fully offline and secure.">
+  <meta property="og:url" content="https://yourwebsite.com/">
+  <meta property="og:image" content="https://yourwebsite.com/og-image.png">
 
-<style>
-*{box-sizing:border-box}
-body{margin:0;font-family:Arial;background:#eef2f7;color:#0f172a}
-header{background:#2563eb;color:#fff;padding:30px;text-align:center}
-header button{margin:5px;padding:10px 14px;border:none;border-radius:8px;background:#1e40af;color:#fff}
-.tools{max-width:1100px;margin:20px auto;padding:0 15px;display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:15px}
-.tool{background:#fff;padding:20px;border-radius:14px;box-shadow:0 8px 20px rgba(0,0,0,.1)}
-button,input,select{width:100%;padding:10px;margin-top:8px}
-button{background:#2563eb;color:#fff;border:none;border-radius:8px;cursor:pointer}
-footer{text-align:center;padding:15px;color:#64748b}
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="DocConvertly – Free PDF Tools">
+  <meta name="twitter:description" content="Convert Image to PDF, PDF to Word, PDF to Image, merge, split, and rotate PDFs directly in your browser. Fully offline and secure.">
+  <meta name="twitter:image" content="https://yourwebsite.com/og-image.png">
 
-/* Loader */
-#loader{position:fixed;inset:0;background:#ffffffdd;display:none;align-items:center;justify-content:center;flex-direction:column;z-index:999}
-.spinner{width:45px;height:45px;border:5px solid #c7d2fe;border-top:5px solid #2563eb;border-radius:50%;animation:spin 1s linear infinite}
-@keyframes spin{to{transform:rotate(360deg)}}
+  <!-- PWA -->
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="icon-192.png">
 
-/* Popups */
-#popup,#limits{position:fixed;inset:0;background:rgba(0,0,0,.4);display:none;align-items:center;justify-content:center;z-index:1000}
-.box{background:#fff;padding:20px;border-radius:12px;max-width:320px;text-align:center}
-.box button{margin-top:10px}
-</style>
+  <style>
+    *{box-sizing:border-box}
+    body{margin:0;font-family:Arial;background:#eef2f7;color:#0f172a}
+    header{background:#2563eb;color:#fff;padding:30px;text-align:center}
+    header button{margin:5px;padding:10px 14px;border:none;border-radius:8px;background:#1e40af;color:#fff}
+    .tools{max-width:1100px;margin:20px auto;padding:0 15px;display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:15px}
+    .tool{background:#fff;padding:20px;border-radius:14px;box-shadow:0 8px 20px rgba(0,0,0,.1)}
+    button,input,select{width:100%;padding:10px;margin-top:8px}
+    button{background:#2563eb;color:#fff;border:none;border-radius:8px;cursor:pointer}
+    footer{text-align:center;padding:15px;color:#64748b}
+
+    /* Loader */
+    #loader{position:fixed;inset:0;background:#ffffffdd;display:none;align-items:center;justify-content:center;flex-direction:column;z-index:999}
+    .spinner{width:45px;height:45px;border:5px solid #c7d2fe;border-top:5px solid #2563eb;border-radius:50%;animation:spin 1s linear infinite}
+    @keyframes spin{to{transform:rotate(360deg)}}
+
+    /* Popups */
+    #popup,#limits{position:fixed;inset:0;background:rgba(0,0,0,.4);display:none;align-items:center;justify-content:center;z-index:1000}
+    .box{background:#fff;padding:20px;border-radius:12px;max-width:320px;text-align:center}
+    .box button{margin-top:10px}
+  </style>
 </head>
 
 <body>
@@ -74,70 +89,68 @@ footer{text-align:center;padding:15px;color:#64748b}
   <button onclick="showLimits()">Know Limits</button>
   <button id="installBtn" style="display:none">Install App</button>
 </header>
+
 <section style="max-width:900px;margin:30px auto;padding:0 20px;text-align:center;">
   <h2>Free Online PDF & Document Tools</h2>
-
   <p>
     DocConvertly is a free online document converter that allows you to convert
     Image to PDF, PDF to Word, PDF to Image, merge PDF files, split PDF pages,
     and rotate PDF documents directly in your browser.
   </p>
-
   <p>
     All conversions happen on your device. Files are never uploaded to any server.
     We do not store or track your documents. Fast, secure, and completely free.
   </p>
 </section>
+
 <main class="tools">
+  <div class="tool">
+    <h3>Image → PDF</h3>
+    <input type="file" id="imageInput" accept="image/*">
+    <button onclick="imageToPDF()">Convert</button>
+  </div>
 
-<div class="tool">
-<h3>Image → PDF</h3>
-<input type="file" id="imageInput" accept="image/*">
-<button onclick="imageToPDF()">Convert</button>
-</div>
+  <div class="tool">
+    <h3>PDF → Image</h3>
+    <input type="file" id="pdfInput" accept="application/pdf">
+    <input type="number" id="pageNo" value="1" min="1" max="5">
+    <button onclick="pdfToImage()">Convert</button>
+  </div>
 
-<div class="tool">
-<h3>PDF → Image</h3>
-<input type="file" id="pdfInput" accept="application/pdf">
-<input type="number" id="pageNo" value="1" min="1">
-<button onclick="pdfToImage()">Convert</button>
-</div>
+  <div class="tool">
+    <h3>Word → PDF</h3>
+    <input type="file" id="wordInput" accept=".docx">
+    <button onclick="wordToPDF()">Convert</button>
+  </div>
 
-<div class="tool">
-<h3>Word → PDF</h3>
-<input type="file" id="wordInput" accept=".docx">
-<button onclick="wordToPDF()">Convert</button>
-</div>
+  <div class="tool">
+    <h3>PDF → Word</h3>
+    <input type="file" id="pdfWordInput" accept="application/pdf">
+    <button onclick="pdfToWord()">Convert</button>
+  </div>
 
-<div class="tool">
-<h3>PDF → Word</h3>
-<input type="file" id="pdfWordInput" accept="application/pdf">
-<button onclick="pdfToWord()">Convert</button>
-</div>
+  <div class="tool">
+    <h3>Merge PDFs</h3>
+    <input type="file" id="mergeInput" accept="application/pdf" multiple>
+    <button onclick="mergePDF()">Merge</button>
+  </div>
 
-<div class="tool">
-<h3>Merge PDFs</h3>
-<input type="file" id="mergeInput" accept="application/pdf" multiple>
-<button onclick="mergePDF()">Merge</button>
-</div>
+  <div class="tool">
+    <h3>Split PDF (ZIP)</h3>
+    <input type="file" id="splitInput" accept="application/pdf">
+    <button onclick="splitPDF()">Split</button>
+  </div>
 
-<div class="tool">
-<h3>Split PDF (ZIP)</h3>
-<input type="file" id="splitInput" accept="application/pdf">
-<button onclick="splitPDF()">Split</button>
-</div>
-
-<div class="tool">
-<h3>Rotate PDF</h3>
-<input type="file" id="rotateInput" accept="application/pdf">
-<select id="angle">
-<option value="90">90°</option>
-<option value="180">180°</option>
-<option value="270">270°</option>
-</select>
-<button onclick="rotatePDF()">Rotate</button>
-</div>
-
+  <div class="tool">
+    <h3>Rotate PDF</h3>
+    <input type="file" id="rotateInput" accept="application/pdf">
+    <select id="angle">
+      <option value="90">90°</option>
+      <option value="180">180°</option>
+      <option value="270">270°</option>
+    </select>
+    <button onclick="rotatePDF()">Rotate</button>
+  </div>
 </main>
 
 <footer>© 2025 DocConvertly</footer>
@@ -164,183 +177,137 @@ function closePopup(){popup.style.display="none"}
 function showLimits(){limits.style.display="flex"}
 function closeLimits(){limits.style.display="none"}
 
-/* Image → PDF (NO CUTTING) */
+/* Image → PDF */
 async function imageToPDF(){
-const f=imageInput.files[0]; if(!f) return popup("Select an image file");
-showLoader("Converting image…");
-  async function pdfToImage(){
+  const f = imageInput.files[0]; if(!f) return popup("Select an image file");
+  showLoader("Converting image…");
+  const img = new Image(); img.src = URL.createObjectURL(f);
+  img.onload = () => {
+    const pdf = new jsPDF();
+    const pw = pdf.internal.pageSize.getWidth();
+    const ph = pdf.internal.pageSize.getHeight();
+    const r = Math.min(pw/img.width, ph/img.height);
+    pdf.addImage(img,"JPEG",(pw-img.width*r)/2,(ph-img.height*r)/2,img.width*r,img.height*r);
+    pdf.save("image.pdf"); hideLoader();
+  };
+}
 
+/* PDF → Image (pages 1-5 only) */
+async function pdfToImage(){
   if(Number(pageNo.value) > 5){
     popup("Only pages 1 to 5 are allowed");
     return;
   }
-
-  const f = pdfInput.files[0];
-  if(!f) return popup("Select a PDF file");
-
+  const f = pdfInput.files[0]; if(!f) return popup("Select a PDF file");
   showLoader("Rendering page…");
-const img=new Image(); img.src=URL.createObjectURL(f);
-img.onload=()=>{
-const pdf=new jsPDF();
-const pw=pdf.internal.pageSize.getWidth();
-const ph=pdf.internal.pageSize.getHeight();
-const r=Math.min(pw/img.width,ph/img.height);
-pdf.addImage(img,"JPEG",(pw-img.width*r)/2,(ph-img.height*r)/2,img.width*r,img.height*r);
-pdf.save("image.pdf"); hideLoader();
-};
-}
-
-/* PDF → Image */
-async function pdfToImage(){
-const f=pdfInput.files[0]; if(!f) return popup("Select a PDF file");
-showLoader("Rendering page…");
-const pdf=await pdfjsLib.getDocument(await f.arrayBuffer()).promise;
-const page=await pdf.getPage(Number(pageNo.value));
-const v=page.getViewport({scale:2});
-const c=document.createElement("canvas");
-c.width=v.width; c.height=v.height;
-await page.render({canvasContext:c.getContext("2d"),viewport:v}).promise;
-c.toBlob(b=>{
-const a=document.createElement("a");
-a.href=URL.createObjectURL(b); a.download="page.png"; a.click();
-hideLoader();
-});
+  const pdf = await pdfjsLib.getDocument(await f.arrayBuffer()).promise;
+  const page = await pdf.getPage(Number(pageNo.value));
+  const v = page.getViewport({scale:2});
+  const c = document.createElement("canvas");
+  c.width = v.width; c.height = v.height;
+  await page.render({canvasContext:c.getContext("2d"),viewport:v}).promise;
+  c.toBlob(b=>{
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(b); a.download="page.png"; a.click();
+    hideLoader();
+  });
 }
 
 /* Word → PDF */
 async function wordToPDF(){
   const f = wordInput.files[0];
   if(!f) return popup("Select a Word (.docx) file");
-
   showLoader("Converting Word to PDF…");
-
   try{
-    const result = await mammoth.extractRawText({
-      arrayBuffer: await f.arrayBuffer()
-    });
-
-    const pdf = new jsPDF({
-      unit: "mm",
-      format: "a4"
-    });
-
+    const result = await mammoth.extractRawText({arrayBuffer: await f.arrayBuffer()});
+    const pdf = new jsPDF({unit:"mm",format:"a4"});
     const margin = 15;
-    const pageWidth = pdf.internal.pageSize.getWidth() - margin * 2;
+    const pageWidth = pdf.internal.pageSize.getWidth() - margin*2;
     const textLines = pdf.splitTextToSize(result.value, pageWidth);
-
     let y = margin;
     textLines.forEach(line=>{
-      if(y > 280){
-        pdf.addPage();
-        y = margin;
-      }
-      pdf.text(line, margin, y);
-      y += 7;
+      if(y>280){pdf.addPage();y=margin;}
+      pdf.text(line, margin, y); y+=7;
     });
-
-    pdf.save("word.pdf");
-    hideLoader();
-
-  }catch(e){
-    hideLoader();
-    popup("Only simple text DOCX supported (no tables/images)");
-  }
-  }
-
-/* PDF → Word (text only) */
-async function pdfToWord(){
-const f=pdfWordInput.files[0]; if(!f) return popup("Select a PDF file");
-showLoader("Extracting text…");
-const pdf=await pdfjsLib.getDocument(await f.arrayBuffer()).promise;
-let text="";
-for(let i=1;i<=pdf.numPages;i++){
-const p=await pdf.getPage(i);
-const c=await p.getTextContent();
-c.items.forEach(x=>text+=x.str+" ");
-text+="\n\n";
+    pdf.save("word.pdf"); hideLoader();
+  }catch(e){hideLoader();popup("Only simple text DOCX supported (no tables/images)");}
 }
-const doc=new docx.Document({sections:[{children:[new docx.Paragraph(text)]}]});
-const blob=await docx.Packer.toBlob(doc);
-const a=document.createElement("a");
-a.href=URL.createObjectURL(blob); a.download="pdf.docx"; a.click();
-hideLoader();
+
+/* PDF → Word */
+async function pdfToWord(){
+  const f = pdfWordInput.files[0]; if(!f) return popup("Select a PDF file");
+  showLoader("Extracting text…");
+  const pdf = await pdfjsLib.getDocument(await f.arrayBuffer()).promise;
+  let text = "";
+  for(let i=1;i<=pdf.numPages;i++){
+    const p = await pdf.getPage(i);
+    const c = await p.getTextContent();
+    c.items.forEach(x=>text+=x.str+" "); text+="\n\n";
+  }
+  const doc = new docx.Document({sections:[{children:[new docx.Paragraph(text)]}]});
+  const blob = await docx.Packer.toBlob(doc);
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob); a.download="pdf.docx"; a.click();
+  hideLoader();
 }
 
 /* Merge PDFs */
 async function mergePDF(){
-const files=mergeInput.files;
-if(!files.length) return popup("Select at least two PDFs");
-showLoader("Merging PDFs…");
-const out=await PDFLib.PDFDocument.create();
-for(const f of files){
-const p=await PDFLib.PDFDocument.load(await f.arrayBuffer());
-const pages=await out.copyPages(p,p.getPageIndices());
-pages.forEach(pg=>out.addPage(pg));
-}
-const a=document.createElement("a");
-a.href=URL.createObjectURL(new Blob([await out.save()],{type:"application/pdf"}));
-a.download="merged.pdf"; a.click(); hideLoader();
+  const files = mergeInput.files; if(!files.length) return popup("Select at least two PDFs");
+  showLoader("Merging PDFs…");
+  const out = await PDFLib.PDFDocument.create();
+  for(const f of files){
+    const p = await PDFLib.PDFDocument.load(await f.arrayBuffer());
+    const pages = await out.copyPages(p,p.getPageIndices());
+    pages.forEach(pg=>out.addPage(pg));
+  }
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(new Blob([await out.save()],{type:"application/pdf"}));
+  a.download="merged.pdf"; a.click(); hideLoader();
 }
 
-/* Split PDF → ZIP */
+/* Split PDF */
 async function splitPDF(){
-const f=splitInput.files[0];
-if(!f) return popup("Select a PDF file");
-showLoader("Splitting PDF…");
-const zip=new JSZip();
-const pdf=await PDFLib.PDFDocument.load(await f.arrayBuffer());
-for(let i=0;i<pdf.getPageCount();i++){
-const n=await PDFLib.PDFDocument.create();
-const [pg]=await n.copyPages(pdf,[i]);
-n.addPage(pg);
-zip.file("page_"+(i+1)+".pdf",await n.save());
-}
-const blob=await zip.generateAsync({type:"blob"});
-const a=document.createElement("a");
-a.href=URL.createObjectURL(blob); a.download="split_pages.zip"; a.click();
-hideLoader();
+  const f = splitInput.files[0]; if(!f) return popup("Select a PDF file");
+  showLoader("Splitting PDF…");
+  const zip = new JSZip();
+  const pdf = await PDFLib.PDFDocument.load(await f.arrayBuffer());
+  for(let i=0;i<pdf.getPageCount();i++){
+    const n = await PDFLib.PDFDocument.create();
+    const [pg] = await n.copyPages(pdf,[i]);
+    n.addPage(pg);
+    zip.file("page_"+(i+1)+".pdf",await n.save());
+  }
+  const blob = await zip.generateAsync({type:"blob"});
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob); a.download="split_pages.zip"; a.click();
+  hideLoader();
 }
 
 /* Rotate PDF */
 async function rotatePDF(){
-  const f = rotateInput.files[0];
-  if(!f) return popup("Select a PDF file");
-
+  const f = rotateInput.files[0]; if(!f) return popup("Select a PDF file");
   showLoader("Rotating all pages…");
-
   try{
     const pdf = await PDFLib.PDFDocument.load(await f.arrayBuffer());
     const rotation = Number(angle.value);
-
-    pdf.getPages().forEach(p=>{
-      p.setRotation(PDFLib.degrees(rotation));
-    });
-
+    pdf.getPages().forEach(p=>p.setRotation(PDFLib.degrees(rotation)));
     const blob = new Blob([await pdf.save()], {type:"application/pdf"});
     const a = document.createElement("a");
     a.href = URL.createObjectURL(blob);
-    a.download = "rotated.pdf";
-    a.click();
-
+    a.download="rotated.pdf"; a.click();
     hideLoader();
-  }catch{
-    hideLoader();
-    popup("Unable to rotate this PDF");
-  }
+  }catch{hideLoader();popup("Unable to rotate this PDF");}
 }
-</script>
 
-<!-- PWA -->
-<script>
+/* PWA Install */
 let deferredPrompt;
 window.addEventListener("beforeinstallprompt",e=>{
-e.preventDefault(); deferredPrompt=e;
-installBtn.style.display="inline-block";
+  e.preventDefault(); deferredPrompt=e;
+  installBtn.style.display="inline-block";
 });
 installBtn.onclick=()=>deferredPrompt.prompt();
-if("serviceWorker"in navigator){
-navigator.serviceWorker.register("service-worker.js");
-}
+if("serviceWorker" in navigator){navigator.serviceWorker.register("service-worker.js");}
 </script>
 
 </body>
