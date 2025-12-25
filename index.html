@@ -168,6 +168,17 @@ function closeLimits(){limits.style.display="none"}
 async function imageToPDF(){
 const f=imageInput.files[0]; if(!f) return popup("Select an image file");
 showLoader("Converting image…");
+  async function pdfToImage(){
+
+  if(Number(pageNo.value) > 5){
+    popup("Only pages 1 to 5 are allowed");
+    return;
+  }
+
+  const f = pdfInput.files[0];
+  if(!f) return popup("Select a PDF file");
+
+  showLoader("Rendering page…");
 const img=new Image(); img.src=URL.createObjectURL(f);
 img.onload=()=>{
 const pdf=new jsPDF();
